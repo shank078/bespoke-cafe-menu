@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Bespoke Cafe — Menu</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lato:wght@300;400;700&family=Playfair+Display:ital,wght@0,400;1,400&display=swap');
+
+:root {
+  --coffee-dark: #1f1a17;
+  --coffee-med: #2a2420;
+  --caramel: #d4a373;
+  --crema: #faedcd;
+  --cream: #fdf6e8;
+  --text: #b8b0a9;
+  --white: #fff;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  background: var(--coffee-dark);
+  color: var(--cream);
+  font-family: 'Lato', sans-serif;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+/* ── ANIMATED BG ── */
+body::before {
+  content:'';
+  position: fixed; inset:0; z-index:0;
+  background:
+    radial-gradient(ellipse at 20% 50%, rgba(212, 163, 115, 0.08) 0%, transparent 55%),
+    radial-gradient(ellipse at 80% 20%, rgba(250, 237, 205, 0.05) 0%, transparent 50%);
+  pointer-events:none;
+}
+
+/* ── HEADER ── */
+.header {
+  position:relative; z-index:10;
+  text-align:center;
+  padding: 40px 20px 18px;
+  border-bottom: 1px solid rgba(212,163,115,0.18);
+}
+.logo-row { display:flex; align-items:center; justify-content:center; gap:14px; margin-bottom:8px; }
+.logo-icon { font-size:2.2rem; animation: floatIcon 4s ease-in-out infinite; filter: drop-shadow(0 0 10px rgba(212,163,115,0.4)); }
+.logo-icon.r { animation-delay:0.7s; }
+@keyframes floatIcon {
+  0%,100%{ transform:translateY(0); }
+  50%{ transform:translateY(-6px); }
+}
+
+h1 {
+  font-family:'Cinzel',serif;
+  font-size:clamp(1.6rem,5vw,3rem);
+  color:var(--caramel);
+  letter-spacing:0.1em;
+  text-shadow:0 0 28px rgba(212,163,115,0.35);
+}
+.sub { font-size:0.72rem; letter-spacing:0.4em; color:var(--text); margin-top:5px; text-transform:uppercase; }
+.badge {
+  display:inline-block; margin-top:8px;
+  border:1px solid rgba(212,163,115,0.3); color:var(--caramel);
+  font-family:'Cinzel',serif; font-size:0.58rem;
+  letter-spacing:0.2em; padding:3px 14px; border-radius:20px;
+}
+.divider { display:flex; align-items:center; gap:10px; max-width:240px; margin:14px auto 0; }
+.dl { flex:1; height:1px; background:linear-gradient(90deg,transparent,var(--caramel),transparent); }
+.dd { width:5px; height:5px; background:var(--caramel); transform:rotate(45deg); }
+
+/* ── NAV ── */
+.nav {
+  position:relative; z-index:10;
+  display:flex; justify-content:center; gap:5px;
+  padding:16px 12px 18px; flex-wrap:wrap;
+}
+.nav-btn {
+  background:rgba(255,255,255,0.03);
+  border:1px solid rgba(212,163,115,0.2);
+  color:var(--text);
+  font-family:'Lato',sans-serif; font-weight:700;
+  font-size:0.65rem; letter-spacing:0.2em;
+  padding:7px 14px; cursor:pointer;
+  text-transform:uppercase; transition:all 0.25s; border-radius:3px;
+}
+.nav-btn:hover, .nav-btn.active {
+  background:var(--caramel); color:var(--coffee-dark);
+  border-color:var(--caramel); box-shadow:0 0 16px rgba(212,163,115,0.4);
+}
+
+/* ── DISH GRID ── */
+.grid {
+  position:relative; z-index:10;
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+  gap:16px; max-width:960px;
+  margin:0 auto; padding:0 14px 80px;
+  perspective:1200px;
+}
+.dish-card {
+  background:linear-gradient(145deg, #28221d, #1c1714);
+  border:1px solid rgba(212,163,115,0.14);
+  border-radius:8px; padding:20px 18px 16px;
+  cursor:pointer; position:relative; overflow:hidden;
+  transition:transform 0.45s cubic-bezier(.23,1,.32,1), box-shadow 0.3s, border-color 0.3s;
+  transform-style:preserve-3d;
+  animation:cardIn 0.5s ease both;
+}
+@keyframes cardIn {
+  from{opacity:0;transform:translateY(32px) rotateX(-10deg);}
+  to{opacity:1;transform:translateY(0) rotateX(0);}
+}
+.dish-card::before {
+  content:''; position:absolute; inset:0;
+  background:linear-gradient(115deg,transparent 38%,rgba(212,163,115,0.06) 50%,transparent 62%);
+  transform:translateX(-200%); transition:transform 0.65s ease;
+}
+.dish-card:hover::before{transform:translateX(200%);}
+.dish-card::after {
+  content:''; position:absolute; top:0; left:0; right:0; height:2px;
+  background:linear-gradient(90deg,transparent,var(--caramel),transparent);
+  opacity:0; transition:opacity 0.3s;
+}
+.dish-card:hover::after{opacity:1;}
+.dish-card:hover {
+  border-color:rgba(212,163,115,0.4);
+  box-shadow:0 18px 50px rgba(0,0,0,0.6),0 0 22px rgba(212,163,115,0.1);
+}
+.card-top { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:10px; }
+.dish-emoji { font-size:2.2rem; filter:drop-shadow(0 3px 8px rgba(212,163,115,0.2)); transition:transform 0.3s; line-height:1; }
+.dish-card:hover .dish-emoji{transform:scale(1.15) rotate(-4deg);}
+.dish-price { font-family:'Playfair Display',serif; font-size:1.05rem; color:var(--caramel); white-space:nowrap; }
+.dish-name { font-family:'Cinzel',serif; font-size:0.88rem; color:var(--white); margin-bottom:6px; line-height:1.35; letter-spacing:0.03em; }
+.dish-desc { font-size:0.8rem; font-weight:300; color:var(--text); line-height:1.55; margin-bottom:12px; }
+.dish-footer { display:flex; justify-content:space-between; align-items:center; border-top:1px solid rgba(212,163,115,0.1); padding-top:9px; }
+.dish-cat-tag { font-size:0.55rem; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:var(--caramel); opacity:0.6; }
+.dish-cta { font-size:0.58rem; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:var(--caramel); opacity:0.5; transition:opacity 0.2s; }
+.dish-card:hover .dish-cta{opacity:1;}
+
+/* ════════════════════════════════════════
+   MODAL — INGREDIENTS FLY UP FROM BOWL
+════════════════════════════════════════ */
+#modal-overlay {
+  display:none; position:fixed; inset:0; z-index:1000;
+  align-items:flex-end; justify-content:center;
+  background:rgba(20, 15, 12, 0.94);
+  backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
+}
+#modal-overlay.open { display:flex; }
+
+#modal {
+  position:relative;
+  width:min(100vw,520px);
+  height:100dvh;
+  overflow:hidden;
+  background:linear-gradient(180deg,#191411 0%,#1f1a17 100%);
+}
+
+/* top bar */
+#modal::before {
+  content:''; position:absolute;
+  top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,transparent,var(--caramel),transparent);
+  z-index:40;
+}
+
+/* close */
+#close-modal {
+  position:absolute; top:14px; right:14px; z-index:50;
+  background:rgba(212,163,115,0.1);
+  border:1px solid rgba(212,163,115,0.3);
+  color:var(--caramel); font-family:'Lato',sans-serif;
+  font-weight:700; font-size:0.65rem; letter-spacing:0.15em;
+  padding:6px 14px; cursor:pointer; border-radius:3px;
+  transition:all 0.2s; text-transform:uppercase;
+}
+#close-modal:hover{background:rgba(212,163,115,0.22);}
+
+/* dish info top */
+.modal-info {
+  position:absolute; top:0; left:0; right:0;
+  padding:22px 60px 16px; z-index:30;
+  text-align:center; pointer-events:none;
+  background:linear-gradient(180deg,rgba(25, 20, 17, 0.98) 60%,transparent);
+}
+.modal-info-emoji { font-size:2.2rem; display:block; filter:drop-shadow(0 0 14px rgba(212,163,115,0.4)); }
+.modal-info-name {
+  font-family:'Cinzel',serif;
+  font-size:clamp(1rem,3.5vw,1.55rem);
+  color:var(--caramel); letter-spacing:0.06em;
+  margin-top:4px;
+}
+.modal-info-price { font-family:'Playfair Display',serif; font-size:1rem; color:var(--crema); margin-top:2px; }
+.modal-info-desc { font-size:0.75rem; font-weight:300; color:var(--text); margin-top:3px; font-style:italic; }
+
+/* ── BOWL at bottom ── */
+#bowl-wrap {
+  position:absolute;
+  bottom:110px; left:50%;
+  transform:translateX(-50%);
+  width:200px; text-align:center;
+  z-index:20;
+}
+.bowl {
+  font-size:7rem; line-height:1;
+  filter:drop-shadow(0 12px 30px rgba(0,0,0,0.8));
+  animation:bowlFloat 4s ease-in-out infinite;
+}
+@keyframes bowlFloat {
+  0%,100%{transform:translateY(0);}
+  50%{transform:translateY(-8px);}
+}
+.bowl-label {
+  font-family:'Cinzel',serif;
+  font-size:0.55rem; letter-spacing:0.2em;
+  color:var(--caramel); opacity:0.55; text-transform:uppercase; margin-top:4px;
+}
+
+/* ── INGREDIENT CHIPS bar ── */
+.ing-bar {
+  position:absolute; bottom:0; left:0; right:0; z-index:30;
+  background:linear-gradient(0deg,rgba(20, 15, 12, 0.99) 70%,transparent);
+  padding:10px 16px 14px;
+}
+.ing-bar-title {
+  font-size:0.5rem; font-weight:700; letter-spacing:0.3em;
+  color:var(--caramel); text-transform:uppercase; opacity:0.6; margin-bottom:7px;
+}
+.ing-chips { display:flex; flex-wrap:wrap; gap:5px; }
+.ing-chip {
+  display:flex; align-items:center; gap:5px;
+  background:rgba(212,163,115,0.08);
+  border:1px solid rgba(212,163,115,0.2);
+  border-radius:20px; padding:3px 10px 3px 7px;
+  font-size:0.78rem; font-weight:300; color:var(--cream);
+  animation:chipPop 0.35s ease both;
+}
+@keyframes chipPop{from{opacity:0;transform:scale(0.6);}to{opacity:1;transform:scale(1);}}
+
+/* ════════════════════════════════════════
+   FLYING INGREDIENTS
+════════════════════════════════════════ */
+.fly-ing {
+  position:absolute;
+  display:flex; flex-direction:column; align-items:center; gap:4px;
+  pointer-events:none; z-index:25;
+  animation:
+    launchUp cubic-bezier(0.22,1,0.36,1) both,
+    driftFloat ease-in-out infinite;
+  transform-origin:center bottom;
+}
+
+.fly-bubble {
+  border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  position:relative; overflow:hidden;
+  background:radial-gradient(circle at 35% 30%,rgba(255,255,255,0.12),rgba(30, 20, 15, 0.6));
+  border:2px solid rgba(212,163,115,0.4);
+  box-shadow:
+    0 8px 24px rgba(0,0,0,0.7),
+    0 0 0 4px rgba(212,163,115,0.06),
+    inset 0 2px 5px rgba(255,255,255,0.05);
+}
+.fly-bubble::before {
+  content:''; position:absolute;
+  top:6px; left:9px; width:36%; height:28%;
+  background:radial-gradient(ellipse,rgba(255,255,255,0.2),transparent);
+  border-radius:50%; transform:rotate(-30deg);
+}
+
+.fly-label {
+  font-family:'Lato',sans-serif; font-weight:700;
+  font-size:0.55rem; letter-spacing:0.12em;
+  color:var(--crema); text-transform:uppercase;
+  white-space:nowrap;
+  background:rgba(25, 20, 15, 0.85);
+  padding:2px 9px; border-radius:20px;
+  backdrop-filter:blur(6px);
+  border:1px solid rgba(212,163,115,0.2);
+  box-shadow:0 2px 8px rgba(0,0,0,0.6);
+}
+
+@keyframes launchUp {
+  0% {
+    opacity:0;
+    transform:translate(var(--startX),var(--startY)) scale(0.3) rotate(var(--startR));
+  }
+  60%{opacity:1;}
+  100% {
+    opacity:1;
+    transform:translate(0,0) scale(1) rotate(0deg);
+  }
+}
+@keyframes driftFloat {
+  0%,100%{ transform:translateY(0) translateX(0) rotate(var(--driftR,0deg)); }
+  33%    { transform:translateY(var(--driftY)) translateX(var(--driftX)) rotate(calc(var(--driftR,0deg) * -1)); }
+  66%    { transform:translateY(calc(var(--driftY) * -0.6)) translateX(calc(var(--driftX) * -1)) rotate(var(--driftR,0deg)); }
+}
+
+/* ── footer ── */
+.page-footer {
+  position:relative; z-index:10; text-align:center;
+  padding:28px 20px 36px;
+  border-top:1px solid rgba(212,163,115,0.1);
+  margin-top:10px;
+}
+.page-footer p { font-size:0.78rem; font-weight:300; color:var(--text); line-height:1.9; opacity:0.7; }
+
+@media(max-width:400px){
+  .fly-bubble{ font-size:1.4rem!important; }
+}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="logo-row">
+    <span class="logo-icon">🌿</span>
+    <div><h1>Bespoke</h1><p class="sub">Cafe &amp; Roastery · Sydney</p></div>
+    <span class="logo-icon r">☕</span>
+  </div>
+  <span class="badge">Locally Sourced · Specialty Coffee</span>
+  <div class="divider"><div class="dl"></div><div class="dd"></div><div class="dl"></div></div>
+</header>
+
+<nav class="nav">
+  <button class="nav-btn active" onclick="filterMenu('all',this)">All</button>
+  <button class="nav-btn" onclick="filterMenu('breakfast',this)">Breakfast</button>
+  <button class="nav-btn" onclick="filterMenu('lunch',this)">Lunch</button>
+  <button class="nav-btn" onclick="filterMenu('coffee',this)">Coffee</button>
+  <button class="nav-btn" onclick="filterMenu('drinks',this)">Cold Drinks</button>
+  <button class="nav-btn" onclick="filterMenu('sweets',this)">Sweets</button>
+</nav>
+
+<div class="grid" id="grid"></div>
+
+<footer class="page-footer">
+  <p>📍Surry Hills, NSW &nbsp;·&nbsp; Mon–Sun 6am–3pm<br>📞 (02) 9*** 4567 &nbsp;·&nbsp; Walk-ins Welcome &nbsp;·&nbsp; 10% Weekend Surcharge Applies</p>
+</footer>
+
+<div id="modal-overlay">
+  <div id="modal">
+    <button id="close-modal" onclick="closeModal()">✕ Close</button>
+
+    <div class="modal-info">
+      <span class="modal-info-emoji" id="m-emoji">🥑</span>
+      <div class="modal-info-name"  id="m-name"></div>
+      <div class="modal-info-price" id="m-price"></div>
+      <div class="modal-info-desc"  id="m-desc"></div>
+    </div>
+
+    <div id="fly-zone"></div>
+
+    <div id="bowl-wrap">
+      <div class="bowl" id="bowl-emoji">🍽️</div>
+      <div class="bowl-label">tap an item to see its elements</div>
+    </div>
+
+    <div class="ing-bar">
+      <div class="ing-bar-title">✨ Ingredients</div>
+      <div class="ing-chips" id="ing-chips"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════
+   DATA
+═══════════════════════════════════════ */
+const dishes = [
+  // BREAKFAST
+  {id:1,cat:'breakfast',emoji:'🥑',name:'Smashed Avo',price:'$19.50',
+   desc:'Sourdough, crumbled feta, cherry tomatoes, poached egg & dukkah',
+   bowl:'🍽️',
+   ing:[{e:'🍞',l:'Sourdough'},{e:'🥑',l:'Avocado'},{e:'🧀',l:'Feta'},{e:'🍅',l:'Cherry Tomato'},{e:'🥚',l:'Poached Egg'},{e:'🌰',l:'Dukkah'}]},
+  {id:2,cat:'breakfast',emoji:'🥓',name:'Bacon & Egg Roll',price:'$13.00',
+   desc:'Crispy double bacon, fried egg, hash brown & house BBQ sauce',
+   bowl:'🍽️',
+   ing:[{e:'🍞',l:'Milk Bun'},{e:'🥓',l:'Crispy Bacon'},{e:'🥚',l:'Fried Egg'},{e:'🥔',l:'Hash Brown'},{e:'🫙',l:'House BBQ'}]},
+  {id:3,cat:'breakfast',emoji:'🍳',name:'Big Aussie Brekkie',price:'$26.50',
+   desc:'Eggs your way, thick bacon, pork sausage, roasted mushrooms, tomato, hash brown & sourdough',
+   bowl:'🍽️',
+   ing:[{e:'🥚',l:'Free Range Eggs'},{e:'🥓',l:'Bacon'},{e:'🌭',l:'Sausage'},{e:'🍄',l:'Mushrooms'},{e:'🍅',l:'Roasted Tomato'},{e:'🥔',l:'Hash Brown'},{e:'🍞',l:'Sourdough'}]},
+  {id:4,cat:'breakfast',emoji:'🌶️',name:'Chilli Scramble',price:'$21.00',
+   desc:'Scrambled eggs, fresh chilli, spring onion, parmesan & sourdough',
+   bowl:'🍽️',
+   ing:[{e:'🥚',l:'Scrambled Eggs'},{e:'🌶️',l:'Fresh Chilli'},{e:'🧅',l:'Spring Onion'},{e:'🧀',l:'Parmesan'},{e:'🍞',l:'Sourdough'},{e:'🧈',l:'Butter'}]},
+  {id:5,cat:'breakfast',emoji:'🥚',name:'Eggs Benedict',price:'$22.50',
+   desc:'Poached eggs, wilted spinach, hollandaise on an English muffin (Choose Leg Ham or Salmon)',
+   bowl:'🍽️',
+   ing:[{e:'🥚',l:'Poached Eggs'},{e:'🍞',l:'English Muffin'},{e:'🧈',l:'Hollandaise'},{e:'🥓',l:'Leg Ham'},{e:'🌿',l:'Spinach'}]},
+  {id:6,cat:'breakfast',emoji:'🌽',name:'Sweet Corn Fritters',price:'$21.50',
+   desc:'Homemade corn fritters, smashed avo, tomato relish & a poached egg',
+   bowl:'🍽️',
+   ing:[{e:'🌽',l:'Sweet Corn'},{e:'🥑',l:'Avocado Salsa'},{e:'🥚',l:'Poached Egg'},{e:'🍅',l:'Tomato Relish'},{e:'🌿',l:'Coriander'}]},
+  {id:7,cat:'breakfast',emoji:'🫐',name:'Acai Bowl',price:'$18.00',
+   desc:'Organic acai, house granola, seasonal berries, peanut butter & chia',
+   bowl:'🥣',
+   ing:[{e:'🫐',l:'Acai Blend'},{e:'🌾',l:'House Granola'},{e:'🍓',l:'Berries'},{e:'🍌',l:'Banana'},{e:'🥜',l:'Peanut Butter'},{e:'🥥',l:'Chia Seeds'}]},
+  {id:8,cat:'breakfast',emoji:'🥞',name:'Ricotta Hotcakes',price:'$21.00',
+   desc:'Fluffy hotcakes, honeycomb butter, maple syrup & fresh berries',
+   bowl:'🍽️',
+   ing:[{e:'🥞',l:'Hotcakes'},{e:'🧀',l:'Ricotta'},{e:'🧈',l:'Honeycomb Butter'},{e:'🍯',l:'Maple Syrup'},{e:'🍓',l:'Fresh Berries'}]},
+
+  // LUNCH
+  {id:9,cat:'lunch',emoji:'🍔',name:'Wagyu Beef Burger',price:'$24.00',
+   desc:'Wagyu patty, cheddar, lettuce, tomato, beetroot, special sauce & chips',
+   bowl:'🍽️',
+   ing:[{e:'🥩',l:'Wagyu Patty'},{e:'🍞',l:'Brioche Bun'},{e:'🧀',l:'Cheddar'},{e:'🥬',l:'Lettuce'},{e:'🍅',l:'Tomato'},{e:'🍠',l:'Beetroot'},{e:'🍟',l:'Chips'}]},
+  {id:10,cat:'lunch',emoji:'🥪',name:'Steak Sandwich',price:'$25.50',
+   desc:'Tender scotch fillet, caramelised onion, rocket, cheese, aioli on Turkish bread with chips',
+   bowl:'🍽️',
+   ing:[{e:'🥩',l:'Scotch Fillet'},{e:'🧅',l:'Caramelised Onion'},{e:'🌿',l:'Rocket'},{e:'🧀',l:'Swiss Cheese'},{e:'🍞',l:'Turkish Bread'},{e:'🧄',l:'Garlic Aioli'},{e:'🍟',l:'Chips'}]},
+  {id:11,cat:'lunch',emoji:'🍗',name:'Chicken Parmigiana',price:'$26.00',
+   desc:'Crumbed chicken breast, Napoli sauce, ham, melted mozzarella & chips',
+   bowl:'🍽️',
+   ing:[{e:'🍗',l:'Chicken Breast'},{e:'🍅',l:'Napoli Sauce'},{e:'🥓',l:'Leg Ham'},{e:'🧀',l:'Mozzarella'},{e:'🍟',l:'Chips'},{e:'🥗',l:'Side Salad'}]},
+  {id:12,cat:'lunch',emoji:'🌯',name:'Chicken Schnitty Wrap',price:'$17.50',
+   desc:'Crumbed chicken breast, lettuce, cheese, tomato & garlic aioli',
+   bowl:'🍽️',
+   ing:[{e:'🌯',l:'Tortilla'},{e:'🍗',l:'Chicken Schnitzel'},{e:'🥬',l:'Lettuce'},{e:'🧀',l:'Swiss Cheese'},{e:'🍅',l:'Tomato'},{e:'🧄',l:'Garlic Aioli'}]},
+  {id:13,cat:'lunch',emoji:'🐟',name:'Fish & Chips',price:'$23.00',
+   desc:'Beer-battered flathead fillets, thick-cut chips, tartare sauce & lemon',
+   bowl:'🍽️',
+   ing:[{e:'🐟',l:'Flathead Fillet'},{e:'🍺',l:'Beer Batter'},{e:'🍟',l:'Thick Chips'},{e:'🫙',l:'Tartare Sauce'},{e:'🍋',l:'Lemon Wedge'}]},
+  {id:14,cat:'lunch',emoji:'🥗',name:'Roast Pumpkin Salad',price:'$19.00',
+   desc:'Roasted pumpkin, quinoa, spinach, pepitas, feta & balsamic glaze',
+   bowl:'🥗',
+   ing:[{e:'🎃',l:'Roast Pumpkin'},{e:'🌾',l:'Quinoa'},{e:'🥬',l:'Baby Spinach'},{e:'🌰',l:'Pepitas'},{e:'🧀',l:'Feta'},{e:'🫙',l:'Balsamic'}]},
+  {id:15,cat:'lunch',emoji:'🥙',name:'Salmon Poke Bowl',price:'$22.00',
+   desc:'Fresh sashimi salmon, brown rice, edamame, seaweed, pickled ginger & sesame dressing',
+   bowl:'🥗',
+   ing:[{e:'🐟',l:'Sashimi Salmon'},{e:'🍚',l:'Brown Rice'},{e:'🫛',l:'Edamame'},{e:'🌿',l:'Seaweed'},{e:'🫚',l:'Pickled Ginger'},{e:'🫙',l:'Sesame Dressing'}]},
+  {id:16,cat:'lunch',emoji:'🦑',name:'Salt & Pepper Squid',price:'$22.50',
+   desc:'Flash fried squid, Asian herb salad & nam jim dressing',
+   bowl:'🍽️',
+   ing:[{e:'🦑',l:'Squid'},{e:'🧂',l:'Salt & Pepper'},{e:'🥗',l:'Herb Salad'},{e:'🌶️',l:'Fresh Chilli'},{e:'🍋',l:'Lime'},{e:'🫙',l:'Nam Jim'}]},
+
+  // COFFEE
+  {id:17,cat:'coffee',emoji:'☕',name:'Flat White',price:'$5.00',
+   desc:'Double ristretto topped with silky steamed milk',
+   bowl:'☕',
+   ing:[{e:'🫘',l:'Double Ristretto'},{e:'🥛',l:'Silky Milk'}]},
+  {id:18,cat:'coffee',emoji:'☕',name:'Cappuccino',price:'$5.00',
+   desc:'Espresso, steamed milk, heavy foam & chocolate dusting',
+   bowl:'☕',
+   ing:[{e:'🫘',l:'Espresso'},{e:'🥛',l:'Steamed Milk'},{e:'☁️',l:'Heavy Foam'},{e:'🍫',l:'Chocolate Dust'}]},
+  {id:19,cat:'coffee',emoji:'☕',name:'Latte',price:'$5.00',
+   desc:'Espresso with steamed milk and a small layer of foam',
+   bowl:'☕',
+   ing:[{e:'🫘',l:'Espresso'},{e:'🥛',l:'Steamed Milk'},{e:'☁️',l:'Light Foam'}]},
+  {id:20,cat:'coffee',emoji:'☕',name:'Long Black',price:'$4.50',
+   desc:'Double shot of espresso poured over hot water',
+   bowl:'☕',
+   ing:[{e:'🫘',l:'Double Espresso'},{e:'💧',l:'Hot Water'}]},
+  {id:21,cat:'coffee',emoji:'☕',name:'Piccolo',price:'$4.50',
+   desc:'A single espresso shot topped up with steamed milk in a small glass',
+   bowl:'☕',
+   ing:[{e:'🫘',l:'Single Espresso'},{e:'🥛',l:'Steamed Milk'}]},
+  {id:22,cat:'coffee',emoji:'☕',name:'Macchiato',price:'$4.00',
+   desc:'Single or double espresso with a dash of steamed milk',
+   bowl:'☕',
+   ing:[{e:'🫘',l:'Espresso'},{e:'🥛',l:'Dash of Milk'}]},
+  {id:23,cat:'coffee',emoji:'🍫',name:'Mocha',price:'$5.50',
+   desc:'Espresso mixed with chocolate powder and steamed milk',
+   bowl:'☕',
+   ing:[{e:'🫘',l:'Espresso'},{e:'🍫',l:'Chocolate Powder'},{e:'🥛',l:'Steamed Milk'}]},
+  {id:24,cat:'coffee',emoji:'🧊',name:'Iced Latte',price:'$6.50',
+   desc:'Double espresso poured over ice and cold milk',
+   bowl:'🥤',
+   ing:[{e:'🫘',l:'Double Espresso'},{e:'🧊',l:'Ice'},{e:'🥛',l:'Cold Milk'}]},
+  {id:25,cat:'coffee',emoji:'🍵',name:'Matcha Latte',price:'$5.50',
+   desc:'Ceremonial grade matcha blended with steamed almond milk',
+   bowl:'☕',
+   ing:[{e:'🍵',l:'Matcha Powder'},{e:'🥛',l:'Almond Milk'},{e:'🍯',l:'Agave'}]},
+  {id:26,cat:'coffee',emoji:'☕',name:'Chai Latte',price:'$5.50',
+   desc:'Spiced chai syrup blended with steamed milk and cinnamon',
+   bowl:'☕',
+   ing:[{e:'🍯',l:'Chai Syrup'},{e:'🥛',l:'Steamed Milk'},{e:'🌰',l:'Cinnamon'}]},
+
+  // DRINKS
+  {id:27,cat:'drinks',emoji:'🥤',name:'Lemon Lime & Bitters',price:'$7.00',
+   desc:'The classic Aussie thirst quencher',
+   bowl:'🥤',
+   ing:[{e:'🍋',l:'Lemon'},{e:'🍋',l:'Lime Cordial'},{e:'🍾',l:'Angostura Bitters'},{e:'🫧',l:'Lemonade'},{e:'🧊',l:'Ice'}]},
+  {id:28,cat:'drinks',emoji:'🍊',name:'Fresh OJ',price:'$8.50',
+   desc:'100% freshly squeezed seasonal oranges',
+   bowl:'🥤',
+   ing:[{e:'🍊',l:'Fresh Oranges'},{e:'🧊',l:'Ice'}]},
+  {id:29,cat:'drinks',emoji:'🍏',name:'Green Smoothie',price:'$9.50',
+   desc:'Spinach, apple, celery, cucumber, ginger & coconut water',
+   bowl:'🥤',
+   ing:[{e:'🥬',l:'Spinach'},{e:'🍏',l:'Green Apple'},{e:'🥒',l:'Cucumber'},{e:'🫚',l:'Ginger'},{e:'🥥',l:'Coconut Water'}]},
+  {id:30,cat:'drinks',emoji:'🍓',name:'Mixed Berry Smoothie',price:'$9.50',
+   desc:'Mixed berries, banana, Greek yoghurt & honey',
+   bowl:'🥤',
+   ing:[{e:'🍓',l:'Mixed Berries'},{e:'🍌',l:'Banana'},{e:'🥛',l:'Greek Yoghurt'},{e:'🍯',l:'Honey'},{e:'🥛',l:'Milk'}]},
+  {id:31,cat:'drinks',emoji:'🥤',name:'Iced Coffee',price:'$8.50',
+   desc:'Double espresso, cold milk, vanilla ice cream & whipped cream',
+   bowl:'🥤',
+   ing:[{e:'🫘',l:'Double Espresso'},{e:'🥛',l:'Cold Milk'},{e:'🍦',l:'Vanilla Ice Cream'},{e:'☁️',l:'Whipped Cream'},{e:'🧊',l:'Ice'}]},
+  {id:32,cat:'drinks',emoji:'🧃',name:'House Kombucha',price:'$7.00',
+   desc:'Locally brewed sparkling fermented tea (Ask for today’s flavor)',
+   bowl:'🥤',
+   ing:[{e:'🧃',l:'Kombucha Base'},{e:'🍋',l:'Fruit Flavoring'},{e:'🫧',l:'Carbonation'}]},
+  {id:33,cat:'drinks',emoji:'🥤',name:'Thickshake',price:'$8.00',
+   desc:'Classic thick milkshake (Chocolate, Strawberry, or Vanilla)',
+   bowl:'🥤',
+   ing:[{e:'🥛',l:'Cold Milk'},{e:'🍦',l:'Premium Ice Cream'},{e:'🍯',l:'Flavor Syrup'}]},
+
+  // SWEETS
+  {id:34,cat:'sweets',emoji:'🥐',name:'Almond Croissant',price:'$7.00',
+   desc:'Twice-baked croissant filled with almond frangipane',
+   bowl:'🍽️',
+   ing:[{e:'🥐',l:'Flaky Pastry'},{e:'🥜',l:'Almond Frangipane'},{e:'🍯',l:'Syrup Glaze'},{e:'🥜',l:'Flaked Almonds'}]},
+  {id:35,cat:'sweets',emoji:'🥥',name:'Classic Lamington',price:'$6.50',
+   desc:'Vanilla sponge dipped in chocolate and coated in desiccated coconut',
+   bowl:'🍽️',
+   ing:[{e:'🍰',l:'Vanilla Sponge'},{e:'🍫',l:'Chocolate Icing'},{e:'🥥',l:'Coconut'},{e:'🍓',l:'Strawberry Jam'}]},
+  {id:36,cat:'sweets',emoji:'🥧',name:'Portuguese Tart',price:'$5.50',
+   desc:'Crispy pastry shell filled with blistered egg custard',
+   bowl:'🍽️',
+   ing:[{e:'🥧',l:'Puff Pastry'},{e:'🥚',l:'Egg Custard'},{e:'🌰',l:'Cinnamon Dust'}]},
+  {id:37,cat:'sweets',emoji:'🍞',name:'Toasted Banana Bread',price:'$7.50',
+   desc:'Thick cut, toasted and served with cultured butter',
+   bowl:'🍽️',
+   ing:[{e:'🍌',l:'Banana Bread'},{e:'🧈',l:'Cultured Butter'},{e:'🍯',l:'Drizzle of Honey'},{e:'🌰',l:'Walnuts'}]},
+  {id:38,cat:'sweets',emoji:'🍫',name:'Caramel Slice',price:'$6.00',
+   desc:'Shortbread base, gooey caramel center, dark chocolate top',
+   bowl:'🍽️',
+   ing:[{e:'🍪',l:'Shortbread'},{e:'🍮',l:'Caramel'},{e:'🍫',l:'Dark Chocolate'}]},
+  {id:39,cat:'sweets',emoji:'🧁',name:'Muffin of the Day',price:'$5.50',
+   desc:'Freshly baked in-house daily (e.g., Blueberry, Raspberry & White Choc)',
+   bowl:'🍽️',
+   ing:[{e:'🧁',l:'Muffin Base'},{e:'🍓',l:'Fresh Berries'},{e:'🍫',l:'Chocolate Chips'}]},
+  {id:40,cat:'sweets',emoji:'🥮',name:'GF Chocolate Brownie',price:'$6.50',
+   desc:'Rich, fudgy gluten-free chocolate brownie',
+   bowl:'🍽️',
+   ing:[{e:'🍫',l:'Dark Chocolate'},{e:'🧈',l:'Butter'},{e:'🥚',l:'Eggs'},{e:'🌾',l:'Gluten Free Flour'}]}
+];
+
+/* ═══════════════════════════════════════
+   RENDER CARDS
+═══════════════════════════════════════ */
+let currentCat = 'all';
+
+function renderCards(){
+  const grid = document.getElementById('grid');
+  const list = currentCat==='all' ? dishes : dishes.filter(d=>d.cat===currentCat);
+  grid.innerHTML = list.map((d,i)=>`
+    <div class="dish-card" onclick="openModal(${d.id})" style="animation-delay:${i*0.055}s">
+      <div class="card-top">
+        <span class="dish-emoji">${d.emoji}</span>
+        <span class="dish-price">${d.price}</span>
+      </div>
+      <div class="dish-name">${d.name}</div>
+      <div class="dish-desc">${d.desc}</div>
+      <div class="dish-footer">
+        <span class="dish-cat-tag">${d.cat}</span>
+        <span class="dish-cta">View Elements ↑</span>
+      </div>
+    </div>
+  `).join('');
+
+  grid.querySelectorAll('.dish-card').forEach(card=>{
+    card.addEventListener('mousemove',e=>{
+      const r=card.getBoundingClientRect();
+      const x=(e.clientX-r.left)/r.width-0.5;
+      const y=(e.clientY-r.top)/r.height-0.5;
+      card.style.transform=`rotateY(${x*12}deg) rotateX(${-y*8}deg) translateZ(14px) scale(1.02)`;
+    });
+    card.addEventListener('mouseleave',()=>card.style.transform='');
+  });
+}
+
+function filterMenu(cat,btn){
+  currentCat=cat;
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderCards();
+}
+
+/* ═══════════════════════════════════════
+   MODAL — INGREDIENTS FLY UP FROM BOWL
+═══════════════════════════════════════ */
+function openModal(id){
+  const dish = dishes.find(d=>d.id===id);
+  if(!dish) return;
+
+  document.getElementById('m-emoji').textContent  = dish.emoji;
+  document.getElementById('m-name').textContent   = dish.name;
+  document.getElementById('m-price').textContent  = dish.price;
+  document.getElementById('m-desc').textContent   = dish.desc;
+  document.getElementById('bowl-emoji').textContent = dish.bowl || '🍽️';
+
+  buildFlyZone(dish.ing);
+  buildChips(dish.ing);
+  document.getElementById('modal-overlay').classList.add('open');
+}
+
+function closeModal(){
+  document.getElementById('modal-overlay').classList.remove('open');
+}
+
+document.getElementById('modal-overlay').addEventListener('click',function(e){
+  if(e.target===this) closeModal();
+});
+
+/* ── build flying ingredients ── */
+function buildFlyZone(ingredients){
+  const zone   = document.getElementById('fly-zone');
+  const modal  = document.getElementById('modal');
+  zone.innerHTML = '';
+
+  const W  = modal.offsetWidth  || 360;
+  const H  = modal.offsetHeight || window.innerHeight;
+
+  const bowlX = W / 2;
+  const bowlY = H - 110 - 40; 
+
+  const topPad   = 175; 
+  const bottomPad= 200; 
+
+  const n = ingredients.length;
+
+  const cols = n <= 4 ? 2 : 3;
+  const rows = Math.ceil(n / cols);
+
+  const colW  = (W - 40) / cols;
+  const rowH  = (H - topPad - bottomPad) / rows;
+
+  const rnd = (a,b) => a + Math.random()*(b-a);
+  const sign= () => Math.random()>.5?1:-1;
+
+  ingredients.forEach((ing, i)=>{
+    const col = i % cols;
+    const row = Math.floor(i / cols);
+
+    const finalX = 20 + col * colW + colW/2 + rnd(-12,12);
+    const finalY = topPad + row * rowH + rowH/2 + rnd(-8,8);
+
+    const startDX = bowlX - finalX + sign()*rnd(20,60);
+    const startDY = bowlY - finalY + rnd(10,40);
+    const startR  = sign()*(30+rnd(0,120));
+
+    const sz = n <= 4 ? 72 : n <= 6 ? 62 : 54;
+    const fontSize = sz * 0.55;
+
+    const flyDelay   = 0.06 + i * 0.08;
+    const floatDelay = flyDelay + 0.7;
+    const floatDur   = rnd(2.4, 3.8);
+    const driftY     = rnd(-10,10);
+    const driftX     = rnd(-8,8);
+    const driftR     = rnd(-4,4);
+
+    const el = document.createElement('div');
+    el.className = 'fly-ing';
+    el.style.cssText = `
+      left: ${finalX}px;
+      top:  ${finalY}px;
+      transform: translate(-50%, -50%);
+      --startX: ${startDX}px;
+      --startY: ${startDY}px;
+      --startR: ${startR}deg;
+      --driftY: ${driftY}px;
+      --driftX: ${driftX}px;
+      --driftR: ${driftR}deg;
+      animation-delay: ${flyDelay}s, ${floatDelay}s;
+      animation-duration: 0.72s, ${floatDur}s;
+    `;
+
+    el.innerHTML = `
+      <div class="fly-bubble" style="width:${sz}px;height:${sz}px;font-size:${fontSize}px;">
+        ${ing.e}
+      </div>
+      <div class="fly-label">${ing.l}</div>
+    `;
+    zone.appendChild(el);
+  });
+}
+
+function buildChips(ing){
+  document.getElementById('ing-chips').innerHTML =
+    ing.map((x,i)=>`
+      <div class="ing-chip" style="animation-delay:${0.85+i*0.07}s">
+        <span>${x.e}</span>${x.l}
+      </div>
+    `).join('');
+}
+
+renderCards();
+</script>
+</body>
+</html>
