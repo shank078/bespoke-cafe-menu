@@ -36,4 +36,4 @@ and efficient solutions.
 
 **Open to opportunities in Systems Administration, Cloud Infrastructure, and Cyber Security in Australia.**
 
-* [Connect with me on LinkedIn](https://www.linkedin.com/in/shankarbaral1/) *(Replace the # with your actual LinkedIn URL)*
+* [Connect with me on LinkedIn](https://www.linkedin.com/in/shankarbaral1/) 
